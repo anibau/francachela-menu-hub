@@ -22,10 +22,10 @@ const Home = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="text-lg">
-                <Link to="/productos">Explorar Productos</Link>
+                <Link to="/francachela/productos">Explorar Productos</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-lg">
-                <Link to="/recetario">Ver Recetas</Link>
+                <Link to="/francachela/recetario">Ver Recetas</Link>
               </Button>
             </div>
           </div>
@@ -36,7 +36,7 @@ const Home = () => {
       <section className="py-16 px-4 bg-muted/50">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link to="/productos" className="group">
+            <Link to="/francachela/productos" className="group">
               <div className="p-6 rounded-lg border bg-card hover:shadow-lg transition-all duration-300">
                 <Wine className="h-12 w-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="font-bold text-xl mb-2">Productos</h3>
@@ -46,7 +46,7 @@ const Home = () => {
               </div>
             </Link>
 
-            <Link to="/combos" className="group">
+            <Link to="/francachela/combos" className="group">
               <div className="p-6 rounded-lg border bg-card hover:shadow-lg transition-all duration-300">
                 <Gift className="h-12 w-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="font-bold text-xl mb-2">Combos</h3>
@@ -56,7 +56,7 @@ const Home = () => {
               </div>
             </Link>
 
-            <Link to="/puntos" className="group">
+            <Link to="/francachela/puntos" className="group">
               <div className="p-6 rounded-lg border bg-card hover:shadow-lg transition-all duration-300">
                 <Star className="h-12 w-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="font-bold text-xl mb-2">Puntos</h3>
@@ -66,7 +66,7 @@ const Home = () => {
               </div>
             </Link>
 
-            <Link to="/recetario" className="group">
+            <Link to="/francachela/recetario" className="group">
               <div className="p-6 rounded-lg border bg-card hover:shadow-lg transition-all duration-300">
                 <BookOpen className="h-12 w-12 text-primary mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="font-bold text-xl mb-2">Recetario</h3>
@@ -90,7 +90,7 @@ const Home = () => {
               Encuentra todo lo que necesitas para hacer de tu celebración un momento inolvidable
             </p>
             <Button asChild size="lg" className="text-lg">
-              <Link to="/contacto">Contáctanos</Link>
+              <Link to="/francachela/contacto">Contáctanos</Link>
             </Button>
           </div>
         </div>
