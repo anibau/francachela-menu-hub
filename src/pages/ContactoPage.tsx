@@ -38,7 +38,7 @@ const ContactoPage = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">Teléfono</h3>
-                  <p className="text-muted-foreground">+52 123 456 7890</p>
+                  <p className="text-muted-foreground">+51 951 756 070</p>
                   <p className="text-sm text-muted-foreground mt-1">
                     Lun-Vie 9:00 AM - 6:00 PM
                   </p>
