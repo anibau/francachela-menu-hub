@@ -22,12 +22,12 @@ const App = () => (
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/productos" element={<ProductosPage />} />
-          <Route path="/combos" element={<CombosPage />} />
-          <Route path="/puntos" element={<PuntosPage />} />
-          <Route path="/recetario" element={<RecetarioPage />} />
-          <Route path="/contacto" element={<ContactoPage />} />
+          <Route path="/francachela" element={<Home />} />
+          <Route path="/francachela/productos" element={<ProductosPage />} />
+          <Route path="/francachela/combos" element={<CombosPage />} />
+          <Route path="/francachela/puntos" element={<PuntosPage />} />
+          <Route path="/francachela/recetario" element={<RecetarioPage />} />
+          <Route path="/francachela/contacto" element={<ContactoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -6,12 +6,12 @@ export const Navbar = () => {
   const location = useLocation();
 
   const links = [
-    { path: '/', label: 'Inicio' },
-    { path: '/productos', label: 'Productos' },
-    { path: '/combos', label: 'Combos' },
-    { path: '/puntos', label: 'Puntos' },
-    { path: '/recetario', label: 'Recetario' },
-    { path: '/contacto', label: 'Contacto' },
+    { path: '/francachela', label: 'Inicio' },
+    { path: '/francachela/productos', label: 'Productos' },
+    { path: '/francachela/combos', label: 'Combos' },
+    { path: '/francachela/puntos', label: 'Puntos' },
+    { path: '/francachela/recetario', label: 'Recetario' },
+    { path: '/francachela/contacto', label: 'Contacto' },
   ];
 
   return (
