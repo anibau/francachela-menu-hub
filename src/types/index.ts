@@ -6,6 +6,7 @@ export type Producto = {
   imagen?: string;
   categoria?: string;
   valor_puntos?: number | string;
+  mostrar?: boolean;
 };
 
 export type Receta = {
@@ -15,6 +16,7 @@ export type Receta = {
   pasos: string;
   imagen?: string;
   categorias?: string[];
+  mostrar?: boolean;
 };
 
 export type Combo = {
@@ -25,6 +27,7 @@ export type Combo = {
   imagen?: string;
   categoria?: string;
   valor_puntos?: number | string;
+  mostrar?: boolean;
 };
 
 export type Punto = {
@@ -34,4 +37,5 @@ export type Punto = {
   imagen?: string;
   categoria?: string;
   valor_puntos?: number | string;
+  mostrar?: boolean;
 };

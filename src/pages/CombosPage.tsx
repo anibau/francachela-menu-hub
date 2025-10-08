@@ -1,11 +1,20 @@
 import { useState, useMemo } from 'react';
 import { useGoogleSheetData } from '@/hooks/useGoogleSheetData';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { SearchBar } from '@/components/SearchBar';
 import { CategorySelector } from '@/components/CategorySelector';
-import { Loader2, Package } from 'lucide-react';
+import { Loader2, Gift } from 'lucide-react';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
+const ITEMS_PER_PAGE = 9;
 const SHOW_PRICES = import.meta.env.VITE_SHOW_PRICES !== 'false';
 const SHOW_POINTS = import.meta.env.VITE_SHOW_POINTS !== 'false';
 
@@ -14,6 +23,7 @@ const CombosPage = () => {
   const { data: productos } = useGoogleSheetData('productos');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const categories = useMemo(() => {
     const cats = combos
@@ -32,6 +42,16 @@ const CombosPage = () => {
       return matchesSearch && matchesCategory;
     });
   }, [combos, searchTerm, selectedCategory]);
+
+  const totalPages = Math.ceil(filteredCombos.length / ITEMS_PER_PAGE);
+  const paginatedCombos = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredCombos.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredCombos, currentPage]);
+
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
 
   if (loading) {
     return (
@@ -52,8 +72,11 @@ const CombosPage = () => {
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="container mx-auto space-y-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold">Catálogo de Combos</h1>
+        <div className="space-y-4 text-center">
+          <h1 className="text-4xl font-bold flex items-center justify-center gap-3">
+            <Gift className="h-10 w-10 text-primary" />
+            Combos Especiales
+          </h1>
           <p className="text-lg text-muted-foreground">
             Paquetes especiales con los mejores precios
           </p>
@@ -73,8 +96,8 @@ const CombosPage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCombos.map((combo) => {
-            const comboProductos = combo.items
+          {paginatedCombos.map((combo) => {
+            const comboItems = combo.items
               .map(id => productos.find(p => p.id === id))
               .filter(Boolean);
 
@@ -88,41 +111,39 @@ const CombosPage = () => {
                   />
                 </div>
                 <CardContent className="p-4 space-y-3">
-                  <h3 className="font-bold text-lg">{combo.nombre}</h3>
-                  
-                  {combo.categoria && (
-                    <Badge variant="secondary">{combo.categoria}</Badge>
-                  )}
+                  <div>
+                    <h3 className="font-bold text-lg mb-2">{combo.nombre}</h3>
+                    {combo.categoria && (
+                      <Badge variant="secondary" className="mb-2">
+                        {combo.categoria}
+                      </Badge>
+                    )}
+                  </div>
 
-                  {comboProductos.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium flex items-center gap-2">
-                        <Package className="h-4 w-4" />
-                        Incluye:
-                      </p>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        {comboProductos.map((p) => (
-                          <li key={p!.id} className="flex items-center gap-2">
-                            • {p!.nombre}
-                          </li>
+                  {comboItems.length > 0 && (
+                    <div className="text-sm text-muted-foreground">
+                      <p className="font-semibold mb-1">Incluye:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        {comboItems.map((item, idx) => (
+                          <li key={idx}>{item?.nombre}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
-                  {SHOW_PRICES && (
-                    <p className="text-xl font-semibold text-primary">
-                      ${typeof combo.precio === 'number' ? combo.precio.toFixed(2) : combo.precio}
-                    </p>
-                  )}
+                  <div className="pt-2 border-t space-y-1">
+                    {SHOW_PRICES && (
+                      <p className="text-lg font-bold text-primary">
+                        S/. {combo.precio}
+                      </p>
+                    )}
+                    {SHOW_POINTS && combo.valor_puntos && (
+                      <p className="text-sm text-muted-foreground">
+                        {combo.valor_puntos} puntos
+                      </p>
+                    )}
+                  </div>
                 </CardContent>
-                {SHOW_POINTS && combo.valor_puntos && (
-                  <CardFooter className="px-4 py-3 bg-muted/50">
-                    <p className="text-sm font-medium">
-                      🎯 {typeof combo.valor_puntos === 'number' ? combo.valor_puntos : combo.valor_puntos} puntos
-                    </p>
-                  </CardFooter>
-                )}
               </Card>
             );
           })}
@@ -134,6 +155,38 @@ const CombosPage = () => {
               No se encontraron combos
             </p>
           </div>
+        )}
+
+        {totalPages > 1 && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                />
+              </PaginationItem>
+              
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => setCurrentPage(page)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         )}
       </div>
     </div>

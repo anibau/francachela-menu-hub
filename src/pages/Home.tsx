@@ -90,7 +90,13 @@ const Home = () => {
               Encuentra todo lo que necesitas para hacer de tu celebración un momento inolvidable
             </p>
             <Button asChild size="lg" className="text-lg">
-              <Link to="/francachela/contacto">Contáctanos</Link>
+              <a 
+                href="https://wa.me/519XXXXXXXX?text=Hola,%20me%20interesa%20obtener%20más%20información%20sobre%20sus%20productos." 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                Contáctanos por WhatsApp
+              </a>
             </Button>
           </div>
         </div>

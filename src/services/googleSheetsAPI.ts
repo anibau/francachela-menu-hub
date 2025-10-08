@@ -10,6 +10,7 @@ const normalizeProducto = (row: any): Producto => ({
   imagen: row.imagen ?? row.IMAGEN,
   categoria: row.categoria ?? row.CATEGORIA,
   valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
+  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
 });
 
 const normalizeReceta = (row: any): Receta => ({
@@ -23,6 +24,7 @@ const normalizeReceta = (row: any): Receta => ({
   categorias: typeof (row.categorias ?? row.CATEGORIAS) === 'string'
     ? (row.categorias ?? row.CATEGORIAS).split(',').map((s: string) => s.trim())
     : (row.categorias ?? row.CATEGORIAS),
+  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
 });
 
 const normalizeCombo = (row: any): Combo => ({
@@ -35,6 +37,7 @@ const normalizeCombo = (row: any): Combo => ({
   imagen: row.imagen ?? row.IMAGEN,
   categoria: row.categoria ?? row.CATEGORIA,
   valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
+  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
 });
 
 const normalizePunto = (row: any): Punto => ({
@@ -44,6 +47,7 @@ const normalizePunto = (row: any): Punto => ({
   imagen: row.imagen ?? row.IMAGEN,
   categoria: row.categoria ?? row.CATEGORIA,
   valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
+  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
 });
 
 export const getProductos = async (): Promise<Producto[]> => {
@@ -55,7 +59,7 @@ export const getProductos = async (): Promise<Producto[]> => {
     const res = await fetch(url);
     if (!res.ok) return [];
     const data = await res.json();
-    return data.map(normalizeProducto);
+    return data.map(normalizeProducto).filter((p: Producto) => p.mostrar !== false);
   } catch (error) {
     console.error('Error fetching productos:', error);
     return [];
@@ -71,7 +75,7 @@ export const getRecetario = async (): Promise<Receta[]> => {
     const res = await fetch(url);
     if (!res.ok) return [];
     const data = await res.json();
-    return data.map(normalizeReceta);
+    return data.map(normalizeReceta).filter((r: Receta) => r.mostrar !== false);
   } catch (error) {
     console.error('Error fetching recetario:', error);
     return [];
@@ -87,7 +91,7 @@ export const getCombos = async (): Promise<Combo[]> => {
     const res = await fetch(url);
     if (!res.ok) return [];
     const data = await res.json();
-    return data.map(normalizeCombo);
+    return data.map(normalizeCombo).filter((c: Combo) => c.mostrar !== false);
   } catch (error) {
     console.error('Error fetching combos:', error);
     return [];
@@ -103,7 +107,7 @@ export const getPuntos = async (): Promise<Punto[]> => {
     const res = await fetch(url);
     if (!res.ok) return [];
     const data = await res.json();
-    return data.map(normalizePunto);
+    return data.map(normalizePunto).filter((p: Punto) => p.mostrar !== false);
   } catch (error) {
     console.error('Error fetching puntos:', error);
     return [];

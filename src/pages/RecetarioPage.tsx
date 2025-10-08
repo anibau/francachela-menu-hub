@@ -7,6 +7,16 @@ import { SearchBar } from '@/components/SearchBar';
 import { CategorySelector } from '@/components/CategorySelector';
 import { Loader2, ChefHat } from 'lucide-react';
 import { Receta } from '@/types';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+
+const ITEMS_PER_PAGE = 9;
 
 const RecetarioPage = () => {
   const { data: recetas, loading, error } = useGoogleSheetData('recetario');
@@ -15,6 +25,7 @@ const RecetarioPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedRecipe, setSelectedRecipe] = useState<Receta | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const categories = useMemo(() => {
     const cats = new Set<string>();
@@ -22,7 +33,6 @@ const RecetarioPage = () => {
       if (receta.categorias) {
         receta.categorias.forEach(cat => cats.add(cat));
       } else {
-        // Inferir categorías desde ingredientes
         receta.ingredientes.forEach(id => {
           const producto = productos.find(p => p.id === id);
           if (producto?.categoria) {
@@ -44,12 +54,10 @@ const RecetarioPage = () => {
         return matchesSearch;
       }
 
-      // Verificar en categorías explícitas
       if (receta.categorias?.includes(selectedCategory)) {
         return matchesSearch;
       }
 
-      // Verificar en categorías inferidas de ingredientes
       const hasIngredientCategory = receta.ingredientes.some(id => {
         const producto = productos.find(p => p.id === id);
         return producto?.categoria === selectedCategory;
@@ -58,6 +66,16 @@ const RecetarioPage = () => {
       return matchesSearch && hasIngredientCategory;
     });
   }, [recetas, productos, searchTerm, selectedCategory]);
+
+  const totalPages = Math.ceil(filteredRecetas.length / ITEMS_PER_PAGE);
+  const paginatedRecetas = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredRecetas.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredRecetas, currentPage]);
+
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
 
   const handleRecipeClick = (receta: Receta) => {
     setSelectedRecipe(receta);
@@ -83,8 +101,8 @@ const RecetarioPage = () => {
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="container mx-auto space-y-8">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold flex items-center gap-3">
+        <div className="space-y-4 text-center">
+          <h1 className="text-4xl font-bold flex items-center justify-center gap-3">
             <ChefHat className="h-10 w-10 text-primary" />
             Recetario de Cócteles
           </h1>
@@ -107,7 +125,7 @@ const RecetarioPage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRecetas.map((receta) => {
+          {paginatedRecetas.map((receta) => {
             const recetaCategorias = receta.categorias || 
               Array.from(new Set(
                 receta.ingredientes
@@ -156,6 +174,38 @@ const RecetarioPage = () => {
               No se encontraron recetas
             </p>
           </div>
+        )}
+
+        {totalPages > 1 && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                />
+              </PaginationItem>
+              
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => setCurrentPage(page)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         )}
 
         <RecipeModal
