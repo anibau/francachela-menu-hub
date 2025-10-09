@@ -13,32 +13,42 @@ const normalizeProducto = (row: any): Producto => ({
   mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
 });
 
-const normalizeReceta = (row: any): Receta => ({
-  id: String(row.id ?? row.ID),
-  nombre: row.nombre ?? row.NOMBRE,
-  ingredientes: typeof (row.ingredientes ?? row.INGREDIENTES) === 'string' 
-    ? (row.ingredientes ?? row.INGREDIENTES).split(',').map((s: string) => s.trim())
-    : (row.ingredientes ?? row.INGREDIENTES ?? []),
-  pasos: row.pasos ?? row.PASOS ?? '',
-  imagen: row.imagen ?? row.IMAGEN,
-  categorias: typeof (row.categorias ?? row.CATEGORIAS) === 'string'
-    ? (row.categorias ?? row.CATEGORIAS).split(',').map((s: string) => s.trim())
-    : (row.categorias ?? row.CATEGORIAS),
-  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
-});
+const normalizeReceta = (row: any): Receta => {
+  const ingredientesRaw = row.ingredientes ?? row.INGREDIENTES;
+  const categoriasRaw = row.categorias ?? row.CATEGORIAS;
+  
+  return {
+    id: String(row.id ?? row.ID),
+    nombre: row.nombre ?? row.NOMBRE,
+    ingredientes: typeof ingredientesRaw === 'string' 
+      ? ingredientesRaw.split(',').map((s: string) => s.trim()).filter(Boolean)
+      : (Array.isArray(ingredientesRaw) ? ingredientesRaw : []),
+    cantidades: row.cantidades ?? row.CANTIDADES ?? '',
+    pasos: row.pasos ?? row.PASOS ?? '',
+    imagen: row.imagen ?? row.IMAGEN,
+    categorias: typeof categoriasRaw === 'string'
+      ? categoriasRaw.split(',').map((s: string) => s.trim()).filter(Boolean)
+      : (Array.isArray(categoriasRaw) ? categoriasRaw : []),
+    mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
+  };
+};
 
-const normalizeCombo = (row: any): Combo => ({
-  id: String(row.id ?? row.ID),
-  nombre: row.nombre ?? row.NOMBRE,
-  precio: Number(row.precio ?? row.PRECIO) || row.precio,
-  items: typeof (row.items ?? row.ITEMS) === 'string'
-    ? (row.items ?? row.ITEMS).split(',').map((s: string) => s.trim())
-    : (row.items ?? row.ITEMS ?? []),
-  imagen: row.imagen ?? row.IMAGEN,
-  categoria: row.categoria ?? row.CATEGORIA,
-  valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
-  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
-});
+const normalizeCombo = (row: any): Combo => {
+  const itemsRaw = row.items ?? row.ITEMS;
+  
+  return {
+    id: String(row.id ?? row.ID),
+    nombre: row.nombre ?? row.NOMBRE,
+    precio: Number(row.precio ?? row.PRECIO) || row.precio,
+    items: typeof itemsRaw === 'string'
+      ? itemsRaw.split(',').map((s: string) => s.trim()).filter(Boolean)
+      : (Array.isArray(itemsRaw) ? itemsRaw : []),
+    imagen: row.imagen ?? row.IMAGEN,
+    categoria: row.categoria ?? row.CATEGORIA,
+    valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
+    mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
+  };
+};
 
 const normalizePunto = (row: any): Punto => ({
   id: String(row.id ?? row.ID),

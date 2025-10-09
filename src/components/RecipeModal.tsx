@@ -58,6 +58,17 @@ export const RecipeModal = ({ receta, productos, open, onOpenChange }: RecipeMod
             </div>
           </div>
 
+          {receta.cantidades && (
+            <div>
+              <h3 className="font-bold text-lg mb-3">Cantidades</h3>
+              <ul className="list-disc list-inside space-y-1 text-foreground">
+                {receta.cantidades.split('\n').filter(Boolean).map((cantidad, idx) => (
+                  <li key={idx}>{cantidad}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div>
             <h3 className="font-bold text-lg mb-3">Preparación</h3>
             <div className="prose prose-sm max-w-none whitespace-pre-line text-foreground">

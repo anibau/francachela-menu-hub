@@ -13,6 +13,7 @@ export type Receta = {
   id: string;
   nombre: string;
   ingredientes: string[];
+  cantidades?: string;
   pasos: string;
   imagen?: string;
   categorias?: string[];
