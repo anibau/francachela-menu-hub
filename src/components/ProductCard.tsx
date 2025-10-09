@@ -29,7 +29,7 @@ export const ProductCard = ({ producto }: ProductCardProps) => {
         {SHOW_PRICES && (
           <div className="space-y-1">
             <p className="text-lg font-semibold text-primary">
-              ${typeof producto.precio === 'number' ? producto.precio.toFixed(2) : producto.precio}
+              S/.{typeof producto.precio === 'number' ? producto.precio.toFixed(2) : producto.precio}
             </p>
             {producto.precio_mayoreo && (
               <p className="text-sm text-muted-foreground">

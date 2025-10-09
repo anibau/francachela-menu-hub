@@ -91,7 +91,7 @@ const Home = () => {
             </p>
             <Button asChild size="lg" className="text-lg">
               <a 
-                href="https://wa.me/519XXXXXXXX?text=Hola,%20me%20interesa%20obtener%20más%20información%20sobre%20sus%20productos." 
+                href="https://wa.me/51951756070?text=Hola,%20me%20interesa%20obtener%20más%20información%20sobre%20sus%20productos." 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
