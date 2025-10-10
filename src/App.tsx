@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import Home from "./pages/Home";
 import ProductosPage from "./pages/ProductosPage";
@@ -19,18 +19,18 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <HashRouter>
         <Navbar />
         <Routes>
-          <Route path="/francachela" element={<Home />} />
-          <Route path="/francachela/productos" element={<ProductosPage />} />
-          <Route path="/francachela/combos" element={<CombosPage />} />
-          <Route path="/francachela/puntos" element={<PuntosPage />} />
-          <Route path="/francachela/recetario" element={<RecetarioPage />} />
-          <Route path="/francachela/contacto" element={<ContactoPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/productos" element={<ProductosPage />} />
+          <Route path="/combos" element={<CombosPage />} />
+          <Route path="/puntos" element={<PuntosPage />} />
+          <Route path="/recetario" element={<RecetarioPage />} />
+          <Route path="/contacto" element={<ContactoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
