@@ -20,15 +20,15 @@ const normalizeReceta = (row: any): Receta => {
   return {
     id: String(row.id ?? row.ID).trim(),
     nombre: row.nombre ?? row.NOMBRE,
-    ingredientes: typeof ingredientesRaw === 'string' 
-      ? ingredientesRaw.split(',').map((s: string) => s.trim()).filter(Boolean)
-      : (Array.isArray(ingredientesRaw) ? ingredientesRaw.map(item => String(item).trim()) : []),
+    ingredientes: ingredientesRaw 
+      ? String(ingredientesRaw).split(',').map((s: string) => s.trim()).filter(Boolean)
+      : [],
     cantidades: row.cantidades ?? row.CANTIDADES ?? '',
     pasos: row.pasos ?? row.PASOS ?? '',
     imagen: row.imagen ?? row.IMAGEN,
-    categorias: typeof categoriasRaw === 'string'
-      ? categoriasRaw.split(',').map((s: string) => s.trim()).filter(Boolean)
-      : (Array.isArray(categoriasRaw) ? categoriasRaw.map(cat => String(cat).trim()) : []),
+    categorias: categoriasRaw
+      ? String(categoriasRaw).split(',').map((s: string) => s.trim()).filter(Boolean)
+      : [],
     mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
   };
 };
@@ -40,9 +40,9 @@ const normalizeCombo = (row: any): Combo => {
     id: String(row.id ?? row.ID).trim(),
     nombre: row.nombre ?? row.NOMBRE,
     precio: Number(row.precio ?? row.PRECIO) || row.precio,
-    items: typeof itemsRaw === 'string'
-      ? itemsRaw.split(',').map((s: string) => s.trim()).filter(Boolean)
-      : (Array.isArray(itemsRaw) ? itemsRaw.map(item => String(item).trim()) : []),
+    items: itemsRaw
+      ? String(itemsRaw).split(',').map((s: string) => s.trim()).filter(Boolean)
+      : [],
     imagen: row.imagen ?? row.IMAGEN,
     categoria: row.categoria ?? row.CATEGORIA,
     valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
