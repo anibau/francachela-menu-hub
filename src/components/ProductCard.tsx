@@ -12,11 +12,11 @@ const SHOW_POINTS = import.meta.env.VITE_SHOW_POINTS !== 'false';
 export const ProductCard = ({ producto }: ProductCardProps) => {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <div className="aspect-square overflow-hidden bg-muted">
+      <div className="aspect-square overflow-hidden bg-muted flex items-center justify-center">
         <img
           src={producto.imagen || 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400&h=400&fit=crop'}
           alt={producto.nombre}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          className=" h-full p-2 flex object-cover hover:scale-105 transition-transform duration-300 "
         />
       </div>
       <CardContent className="p-4">
