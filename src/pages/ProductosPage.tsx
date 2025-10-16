@@ -4,6 +4,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { SearchBar } from '@/components/SearchBar';
 import { CategorySelector } from '@/components/CategorySelector';
 import { Loader2 } from 'lucide-react';
+import { getVisiblePages } from '@/lib/paginationUtils';
 import {
   Pagination,
   PaginationContent,
@@ -112,15 +113,19 @@ const ProductosPage = () => {
                 />
               </PaginationItem>
               
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    onClick={() => setCurrentPage(page)}
-                    isActive={currentPage === page}
-                    className="cursor-pointer"
-                  >
-                    {page}
-                  </PaginationLink>
+              {getVisiblePages(currentPage, totalPages, 5).map((page, index) => (
+                <PaginationItem key={`${page}-${index}`}>
+                  {page === -1 ? (
+                    <span className="px-3 py-2">...</span>
+                  ) : (
+                    <PaginationLink
+                      onClick={() => setCurrentPage(page)}
+                      isActive={currentPage === page}
+                      className="cursor-pointer"
+                    >
+                      {page}
+                    </PaginationLink>
+                  )}
                 </PaginationItem>
               ))}
               
