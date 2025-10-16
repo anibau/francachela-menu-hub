@@ -89,11 +89,12 @@ const Home = () => {
             <p className="text-lg text-muted-foreground">
               Encuentra todo lo que necesitas para hacer de tu celebración un momento inolvidable
             </p>
-            <Button asChild size="lg" className="text-lg">
+            <Button asChild size="lg" className="text-lg flex-wrap h-auto py-3">
               <a 
                 href="https://wa.me/51951756070?text=Hola,%20me%20interesa%20obtener%20más%20información%20sobre%20sus%20productos." 
                 target="_blank" 
                 rel="noopener noreferrer"
+                className=" text-wrap"
               >
                 Contáctanos por WhatsApp
               </a>

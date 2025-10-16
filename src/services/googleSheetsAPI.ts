@@ -2,18 +2,22 @@ import { Producto, Receta, Combo, Punto } from '../types';
 
 const USE_MOCKS = import.meta.env.VITE_USE_MOCKS === 'true';
 
-const normalizeProducto = (row: any): Producto => ({
-  id: String(row.id ?? row.ID).trim(),
-  nombre: row.nombre ?? row.NOMBRE,
-  precio: Number(row.precio ?? row.PRECIO) || row.precio,
-  precio_mayoreo: Number(row.precio_mayoreo ?? row.PRECIO_MAYOREO ?? row['PRECIO_MAYOREO']) || row.precio_mayoreo,
-  imagen: row.imagen ?? row.IMAGEN,
-  categoria: row.categoria ?? row.CATEGORIA,
-  valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
-  mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
-});
+const normalizeProducto = (row): Producto => {
+  const id = String(row.id ?? row.ID).trim();
+ 
+  return {
+    id: id,
+    nombre: row.nombre ?? row.NOMBRE,
+    precio: Number(row.precio ?? row.PRECIO) || row.precio,
+    precio_mayoreo: Number(row.precio_mayoreo ?? row.PRECIO_MAYOREO ?? row['PRECIO_MAYOREO']) || row.precio_mayoreo,
+    imagen: row.imagen ?? row.IMAGEN,
+    categoria: row.categoria ?? row.CATEGORIA,
+    valor_puntos: Number(row.valor_puntos ?? row.VALOR_PUNTOS ?? row['VALOR_PUNTOS']) || row.valor_puntos,
+    mostrar: row.mostrar === true || row.MOSTRAR === true || row.mostrar === 'true' || row.MOSTRAR === 'true' || row.mostrar === 'TRUE' || row.MOSTRAR === 'TRUE',
+  };
+};
 
-const normalizeReceta = (row: any): Receta => {
+const normalizeReceta = (row): Receta => {
   const ingredientesRaw = row.ingredientes ?? row.INGREDIENTES;
   const categoriasRaw = row.categorias ?? row.CATEGORIAS;
   
@@ -33,7 +37,7 @@ const normalizeReceta = (row: any): Receta => {
   };
 };
 
-const normalizeCombo = (row: any): Combo => {
+const normalizeCombo = (row): Combo => {
   const itemsRaw = row.items ?? row.ITEMS;
   
   return {
@@ -50,7 +54,7 @@ const normalizeCombo = (row: any): Combo => {
   };
 };
 
-const normalizePunto = (row: any): Punto => ({
+const normalizePunto = (row): Punto => ({
   id: String(row.id ?? row.ID).trim(),
   nombre: row.nombre ?? row.NOMBRE,
   precio: Number(row.precio ?? row.PRECIO) || row.precio,

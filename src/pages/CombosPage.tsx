@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { SearchBar } from '@/components/SearchBar';
 import { CategorySelector } from '@/components/CategorySelector';
 import { Loader2, Gift } from 'lucide-react';
+import { findProductsByIds } from '@/lib/dataTransformers';
 import {
   Pagination,
   PaginationContent,
@@ -51,7 +52,7 @@ const CombosPage = () => {
 
   useMemo(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedCategory]);
+  }, []);
 
   if (loading) {
     return (
@@ -97,9 +98,8 @@ const CombosPage = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {paginatedCombos.map((combo) => {
-            const comboItems = combo.items
-              .map(id => productos.find(p => p.id === id))
-              .filter(Boolean);
+            
+            const comboItems = findProductsByIds(productos, combo.items);
 
             return (
               <Card key={combo.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">

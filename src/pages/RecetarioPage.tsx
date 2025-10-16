@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { SearchBar } from '@/components/SearchBar';
 import { CategorySelector } from '@/components/CategorySelector';
 import { Loader2, ChefHat } from 'lucide-react';
+import { findProductsByIds } from '@/lib/dataTransformers';
 import { Receta } from '@/types';
 import {
   Pagination,
@@ -58,10 +59,10 @@ const RecetarioPage = () => {
         return matchesSearch;
       }
 
-      const hasIngredientCategory = receta.ingredientes.some(id => {
-        const producto = productos.find(p => p.id === id);
-        return producto?.categoria === selectedCategory;
-      });
+      const ingredientProducts = findProductsByIds(productos, receta.ingredientes);
+      const hasIngredientCategory = ingredientProducts.some(producto => 
+        producto.categoria === selectedCategory
+      );
 
       return matchesSearch && hasIngredientCategory;
     });
@@ -75,7 +76,7 @@ const RecetarioPage = () => {
 
   useMemo(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedCategory]);
+  }, []);
 
   const handleRecipeClick = (receta: Receta) => {
     setSelectedRecipe(receta);

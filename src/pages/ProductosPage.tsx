@@ -47,7 +47,7 @@ const ProductosPage = () => {
 
   useMemo(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedCategory]);
+  }, []);
 
   if (loading) {
     return (

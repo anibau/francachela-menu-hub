@@ -21,9 +21,11 @@ export function useGoogleSheetData<T extends EndpointName>(endpointName: T) {
     
     try {
       let result;
+      let rawResult;
       switch (endpointName) {
         case 'productos':
-          result = await getProductos();
+          rawResult = await getProductos();
+          result = rawResult;
           break;
         case 'recetario':
           result = await getRecetario();
